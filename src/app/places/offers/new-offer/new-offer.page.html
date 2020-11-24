@@ -1,0 +1,76 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/places/offers"> </ion-back-button>
+    </ion-buttons>
+      
+    <ion-title>Nova Oferta</ion-title>
+    <ion-buttons color="primary" slot="end">
+      <ion-button (click)="onCreateOffer()" [disabled]="!form.valid">
+        <ion-icon name="checkmark" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]='form'>
+    <ion-grid>
+        <ion-row>
+            <ion-col size-sm="6" offset-sm="3">
+              <ion-item>
+                <ion-label position="floating">Título</ion-label>
+                <ion-input type="text" autocomplete autocorrect formControlName="title"></ion-input>
+              </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-sm="6" offset-sm="3">
+            <ion-item>
+              <ion-label position="floating">Descrição Curta</ion-label>
+              <ion-textarea rows="3" formControlName="description"></ion-textarea>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="!form.get('description').valid && form.get('description').touched">
+          <ion-col size-sm="6" offset-sm="3">
+            <p> A descrição deve conter até 180 caracteres.</p>
+          </ion-col>
+        </ion-row>>
+        <ion-row>
+          <ion-col size-sm="6" offset-sm="3">
+            <ion-item>
+              <ion-label position="floating">Preço</ion-label>
+              <ion-input type="number" formControlName="price"></ion-input>
+            </ion-item>
+          </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="3" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating"> Disponível de </ion-label>
+            <ion-datetime 
+                formControlName="dateFrom"
+                pickerFormat="DD MMM YYYY" 
+                min="2019-01-01" 
+                max="2050-12-31"
+                monthShortNames="Jan., Fev., Mar., Abr., Maio, Jun., Jul., Ago., Set., Out., Nov., Dez."
+            ></ion-datetime>
+          </ion-item>
+        </ion-col>
+        <ion-col size-sm="3" >
+          <ion-item>
+            <ion-label position="floating">Disponível até </ion-label>
+            <ion-datetime 
+                formControlName="dateTo"
+                pickerFormat="DD MMM YYYY" 
+                min="2019-01-01"
+                max="2050-12-31"
+                monthShortNames="Jan., Fev., Mar., Abr., Maio, Jun., Jul., Ago., Set., Out., Nov., Dez."
+            ></ion-datetime>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

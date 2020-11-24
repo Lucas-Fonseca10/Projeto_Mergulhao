@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot='start'>
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Descobrir Locais</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-segment (ionChange)="onFilterUpdate($event.detail.value)">
+    <ion-segment-button value="all">Todos os Locais</ion-segment-button>
+    <ion-segment-button value="bookable">Locais Reserváveis</ion-segment-button>
+  </ion-segment>
+  <ion-grid *ngIf="isLoading">
+    <ion-row>
+      <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
+        <ion-spinner></ion-spinner>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+    <ion-grid *ngIf="!isLoading && (!relevantPlaces || relevantPlaces.length <= 0)">
+      <ion-row>
+        <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
+            <p> Não há lugares reserváveis por hora, por favor volte mais tarde</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-grid *ngIf="!isLoading && relevantPlaces.length > 0">
+        <ion-row>
+            <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
+                <ion-card>
+                  <ion-card-header>
+                    <ion-card-title>{{ relevantPlaces[0].title }}</ion-card-title>
+                    <ion-card-subtitle> {{ relevantPlaces[0].price |currency: 'BRL'}}/dia </ion-card-subtitle>
+                  </ion-card-header>
+                  <ion-img [src]= 'relevantPlaces[0].imageUrl'></ion-img>
+                  <ion-card-content>
+                    <p>{{ relevantPlaces[0].description }}</p>
+                  </ion-card-content>
+                  <div class= "ion-text-right">
+                    <ion-button
+                    fill="clear"
+                    color="primary"
+                    [routerLink]="['/','places', 'discover', relevantPlaces[0].id ]"
+                    >Ver Mais
+                  </ion-button>
+          
+                  </div>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
+            <ion-list approxItemHeight="70px">
+                <ion-item
+                *ngFor="let place of relevantPlaces | slice:1" 
+                [routerLink]="['/','places', 'discover', place.id ]"
+                detail
+                >
+                    <ion-thumbnail slot="start">
+                        <ion-img [src]="place.imageUrl"></ion-img>
+                    </ion-thumbnail>
+                    <ion-label>
+                        <h2>{{ place.title }}</h2>
+                        <p>{{ place.description }}</p>
+                    </ion-label> 
+                </ion-item>
+            </ion-list>
+          </ion-col>
+        </ion-row>
+    </ion-grid>
+
+</ion-content>
